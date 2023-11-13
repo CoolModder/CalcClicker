@@ -1,0 +1,53 @@
+palettes:
+  - name: palette
+    fixed-entries:
+      - color: { index: 0, r: 255, g: 255, b: 255}
+      - color: { index: 1, r: 0, g: 0, b: 0}
+    images: automatic
+
+converts:
+  - name: gfx
+    palette: palette
+    transparent-color-index: 0
+    images:
+      - background
+      - arrow_left
+      - arrow_right
+
+  - name: gfx_ce
+    palette: palette
+    transparent-color-index: 0
+    images:
+      - calc_large
+      - calc_small
+
+  - name: gfx_up
+    palette: palette
+    transparent-color-index: 0
+    images:
+      - up_add
+      - up_cal
+      - up_div
+      - up_exp
+      - up_mul
+      - up_sub
+      - up_stu
+      - up_off
+      - up_pho
+      - up_bar
+      - up_coo
+      - up_but
+      - up_box
+
+outputs:
+  - type: appvar
+    name: CEClickU
+    include-file: CEClickU.h
+    source-format: c
+    converts:
+      - gfx_up
+      - gfx
+      - gfx_ce
+    palettes:
+      - palette
+ 
