@@ -8,6 +8,7 @@
 #include <time.h>
 #include <graphx.h>
 #include <keypadc.h>
+#include <inttypes.h>
 #include <fileioc.h>
 #include <debug.h>
 #include "gfx/CEClickU.h" 
@@ -40,7 +41,11 @@ struct prices_t
 	uint64_t calcprice;
 	uint64_t buttonprice;
 };
-
+void printUInt64(uint64_t num) {
+	char str[21]; // 64-bit numbers have at most 20 decimal digits
+	sprintf(str, "%" PRIu64, num);
+	gfx_PrintString(str);
+}
 
 
 
@@ -52,7 +57,7 @@ void missing_appvars(void) {
 	exit(0);
 }
 
-void Draw(struct player_t Player, struct counts_t Counts, struct prices_t Prices, bool prevkey) {
+void Draw(struct player_t* Player, struct counts_t* Counts, struct prices_t* Prices, bool prevkey) {
 	gfx_FillScreen(7);
 	gfx_SetColor(0);
 	gfx_TransparentSprite(background, 0, 0);
@@ -69,10 +74,10 @@ void Draw(struct player_t Player, struct counts_t Counts, struct prices_t Prices
 
 
 	gfx_PrintString("Equations: ");
-	gfx_PrintUInt(Player.points,1);
+	printUInt64((*Player).points);
 	gfx_SetTextXY(10, 20);
 	gfx_PrintString("EPS: ");
-	gfx_PrintUInt(Player.cps * Player.cps_mult, 1);
+	printUInt64((*Player).cps * (*Player).cps_mult);
 	if (prevkey)
 	{
 		gfx_TransparentSprite(calc_small, 24, 68);
@@ -87,163 +92,163 @@ void Draw(struct player_t Player, struct counts_t Counts, struct prices_t Prices
 	gfx_PrintString("2nd: Buy Top, Alpha : Buy Bottom");
 	gfx_TransparentSprite(up_box, 136, 74);
 	gfx_TransparentSprite(up_box, 136, 140);
-	if (Player.page > 0)
+	if ((*Player).page > 0)
 	{
 		gfx_TransparentSprite(arrow_right, 112, 126);
 	}
-	if (Player.page < Player.unlocked)
+	if ((*Player).page < (*Player).unlocked)
 	{
 		gfx_TransparentSprite(arrow_left, 296, 126);
 	}
 	
-	if (Player.page == 0)
+	if ((*Player).page == 0)
 	{
 		gfx_TransparentSprite(up_add, 140, 74);
 		gfx_SetTextXY(170, 80);
 		gfx_PrintString("Addition Sign");
 		gfx_SetTextXY(170, 90);
 		gfx_PrintString("X ");
-		gfx_PrintUInt(Counts.addcount, 1);
+		printUInt64((*Counts).addcount);
 		gfx_SetTextXY(142, 104);
 		gfx_PrintString("+1 EQU Per Click");
 		gfx_SetTextXY(142, 114);
-		gfx_PrintUInt(Prices.addprice, 1);
+		printUInt64((*Prices).addprice);
 		gfx_PrintString(" EQU");
 		gfx_TransparentSprite(up_stu, 140, 142);
 		gfx_SetTextXY(170, 148);
 		gfx_PrintString("Bored Student");
 		gfx_SetTextXY(170, 158);
 		gfx_PrintString("X ");
-		gfx_PrintUInt(Counts.studentcount, 1);
+		printUInt64((*Counts).studentcount);
 		gfx_SetTextXY(142, 172);
 		gfx_PrintString("+1 EPS");
 		gfx_SetTextXY(142, 182);
-		gfx_PrintUInt(Prices.studentprice, 1);
+		printUInt64((*Prices).studentprice);
 		gfx_PrintString(" EQU");
 	}
-	else if (Player.page == 1)
+	else if ((*Player).page == 1)
 	{
 		gfx_TransparentSprite(up_sub, 140, 74);
 		gfx_SetTextXY(170, 80);
 		gfx_PrintString("Subtraction Sign");
 		gfx_SetTextXY(170, 90);
 		gfx_PrintString("X ");
-		gfx_PrintUInt(Counts.subcount, 1);
+		printUInt64((*Counts).subcount);
 		gfx_SetTextXY(142, 104);
 		gfx_PrintString("+3 EQU Per Click");
 		gfx_SetTextXY(142, 114);
-		gfx_PrintUInt(Prices.subprice, 1);
+		printUInt64((*Prices).subprice);
 		gfx_PrintString(" EQU");
 		gfx_TransparentSprite(up_coo, 140, 142);
 		gfx_SetTextXY(170, 148);
 		gfx_PrintString("Cookie");
 		gfx_SetTextXY(170, 158);
 		gfx_PrintString("X ");
-		gfx_PrintUInt(Counts.cookiecount, 1);
+		printUInt64((*Counts).cookiecount);
 		gfx_SetTextXY(142, 172);
 		gfx_PrintString("+4 EPS");
 		gfx_SetTextXY(142, 182);
-		gfx_PrintUInt(Prices.cookieprice, 1);
+		printUInt64((*Prices).cookieprice);
 		gfx_PrintString(" EQU");
 	}
-	else if (Player.page == 2)
+	else if ((*Player).page == 2)
 	{
 		gfx_TransparentSprite(up_mul, 140, 74);
 		gfx_SetTextXY(170, 80);
 		gfx_PrintString("Multiplying Sign");
 		gfx_SetTextXY(170, 90);
 		gfx_PrintString("X ");
-		gfx_PrintUInt(Counts.multcount, 1);
+		printUInt64((*Counts).multcount);
 		gfx_SetTextXY(142, 104);
 		gfx_PrintString("+10 EQU Per Click");
 		gfx_SetTextXY(142, 114);
-		gfx_PrintUInt(Prices.multprice, 1);
+		printUInt64((*Prices).multprice);
 		gfx_PrintString(" EQU");
 		gfx_TransparentSprite(up_off, 140, 142);
 		gfx_SetTextXY(170, 148);
 		gfx_PrintString("Office Worker");
 		gfx_SetTextXY(170, 158);
 		gfx_PrintString("X ");
-		gfx_PrintUInt(Counts.officecount, 1);
+		printUInt64((*Counts).officecount);
 		gfx_SetTextXY(142, 172);
 		gfx_PrintString("+27 EPS");
 		gfx_SetTextXY(142, 182);
-		gfx_PrintUInt(Prices.officeprice, 1);
+		printUInt64((*Prices).officeprice);
 		gfx_PrintString(" EQU");
 	}
-	else if (Player.page == 3)
+	else if ((*Player).page == 3)
 	{
 		gfx_TransparentSprite(up_div, 140, 74);
 		gfx_SetTextXY(170, 80);
 		gfx_PrintString("Division Sign");
 		gfx_SetTextXY(170, 90);
 		gfx_PrintString("X ");
-		gfx_PrintUInt(Counts.divcount, 1);
+		printUInt64((*Counts).divcount);
 		gfx_SetTextXY(142, 104);
 		gfx_PrintString("80 EQU Per Click");
 		gfx_SetTextXY(142, 114);
-		gfx_PrintUInt(Prices.divprice, 1);
+		printUInt64((*Prices).divprice);
 		gfx_PrintString(" EQU");
 		gfx_TransparentSprite(up_pho, 140, 142);
 		gfx_SetTextXY(170, 148);
 		gfx_PrintString("Phone :0");
 		gfx_SetTextXY(170, 158);
 		gfx_PrintString("X ");
-		gfx_PrintUInt(Counts.phonecount, 1);
+		printUInt64((*Counts).phonecount);
 		gfx_SetTextXY(142, 172);
 		gfx_PrintString("+101 EPS");
 		gfx_SetTextXY(142, 182);
-		gfx_PrintUInt(Prices.phoneprice, 1);
+		printUInt64((*Prices).phoneprice);
 		gfx_PrintString(" EQU");
 	}
-	else if (Player.page == 4)
+	else if ((*Player).page == 4)
 	{
 		gfx_TransparentSprite(up_exp, 140, 74);
 		gfx_SetTextXY(170, 80);
 		gfx_PrintString("Exponent Sign");
 		gfx_SetTextXY(170, 90);
 		gfx_PrintString("X ");
-		gfx_PrintUInt(Counts.expcount, 1);
+		printUInt64((*Counts).expcount);
 		gfx_SetTextXY(142, 104);
 		gfx_PrintString("750 EQU Per Click");
 		gfx_SetTextXY(142, 114);
-		gfx_PrintUInt(Prices.expprice, 1);
+		printUInt64((*Prices).expprice);
 		gfx_PrintString(" EQU");
 		gfx_TransparentSprite(up_bar, 140, 142);
 		gfx_SetTextXY(170, 148);
 		gfx_PrintString("Spacebar");
 		gfx_SetTextXY(170, 158);
 		gfx_PrintString("X ");
-		gfx_PrintUInt(Counts.spacecount, 1);
+		printUInt64((*Counts).spacecount);
 		gfx_SetTextXY(142, 172);
 		gfx_PrintString("+980 EPS");
 		gfx_SetTextXY(142, 182);
-		gfx_PrintUInt(Prices.spaceprice, 1);
+		printUInt64((*Prices).spaceprice);
 		gfx_PrintString(" EQU");
 	}
-	else if (Player.page == 5)
+	else if ((*Player).page == 5)
 	{
 		gfx_TransparentSprite(up_cal, 140, 74);
 		gfx_SetTextXY(170, 80);
 		gfx_PrintString("Calculator");
 		gfx_SetTextXY(170, 90);
 		gfx_PrintString("X ");
-		gfx_PrintUInt(Counts.calccount, 1);
+		printUInt64((*Counts).calccount);
 		gfx_SetTextXY(142, 104);
 		gfx_PrintString("2x EQU Per Click");
 		gfx_SetTextXY(142, 114);
-		gfx_PrintUInt(Prices.calcprice, 1);
+		printUInt64((*Prices).calcprice);
 		gfx_PrintString(" EQU");
 		gfx_TransparentSprite(up_but, 140, 142);
 		gfx_SetTextXY(170, 148);
 		gfx_PrintString("Button");
 		gfx_SetTextXY(170, 158);
 		gfx_PrintString("X ");
-		gfx_PrintUInt(Counts.buttoncount, 1);
+		printUInt64((*Counts).buttoncount);
 		gfx_SetTextXY(142, 172);
 		gfx_PrintString("2x EPS");
 		gfx_SetTextXY(142, 182);
-		gfx_PrintUInt(Prices.buttonprice, 1);
+		printUInt64((*Prices).buttonprice);
 		gfx_PrintString(" EQU");
 	}
 	gfx_SetColor(1);
@@ -568,7 +573,7 @@ int main(void)
 				}
 			}
 			seconds = rtc_Seconds;
-			Draw(Player, Counts, Prices, prevkey);
+			Draw(&Player, &Counts, &Prices, prevkey);
 
 			prevkey = key;
 		} while (!(g1_key & kb_Del));
