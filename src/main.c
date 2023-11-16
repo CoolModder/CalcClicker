@@ -41,7 +41,7 @@ struct prices_t
 	uint64_t calcprice;
 	uint64_t buttonprice;
 };
-void printUInt64(uint64_t num) {
+void print_uint64(uint64_t num) {
 	char str[21]; // 64-bit numbers have at most 20 decimal digits
 	sprintf(str, "%" PRIu64, num);
 	gfx_PrintString(str);
@@ -57,7 +57,7 @@ void missing_appvars(void) {
 	exit(0);
 }
 
-void Draw(struct player_t* Player, struct counts_t* Counts, struct prices_t* Prices, bool prevkey) {
+void draw(struct player_t* Player, struct counts_t* Counts, struct prices_t* Prices, bool prevkey) {
 	gfx_FillScreen(7);
 	gfx_SetColor(0);
 	gfx_TransparentSprite(background, 0, 0);
@@ -74,10 +74,10 @@ void Draw(struct player_t* Player, struct counts_t* Counts, struct prices_t* Pri
 
 
 	gfx_PrintString("Equations: ");
-	printUInt64((*Player).points);
+	print_uint64(Player->points);
 	gfx_SetTextXY(10, 20);
 	gfx_PrintString("EPS: ");
-	printUInt64((*Player).cps * (*Player).cps_mult);
+	print_uint64(Player->cps * Player->cps_mult);
 	if (prevkey)
 	{
 		gfx_TransparentSprite(calc_small, 24, 68);
@@ -92,163 +92,163 @@ void Draw(struct player_t* Player, struct counts_t* Counts, struct prices_t* Pri
 	gfx_PrintString("2nd: Buy Top, Alpha : Buy Bottom");
 	gfx_TransparentSprite(up_box, 136, 74);
 	gfx_TransparentSprite(up_box, 136, 140);
-	if ((*Player).page > 0)
+	if (Player->page > 0)
 	{
 		gfx_TransparentSprite(arrow_right, 112, 126);
 	}
-	if ((*Player).page < (*Player).unlocked)
+	if (Player->page < Player->unlocked)
 	{
 		gfx_TransparentSprite(arrow_left, 296, 126);
 	}
 	
-	if ((*Player).page == 0)
+	if (Player->page == 0)
 	{
 		gfx_TransparentSprite(up_add, 140, 74);
 		gfx_SetTextXY(170, 80);
 		gfx_PrintString("Addition Sign");
 		gfx_SetTextXY(170, 90);
 		gfx_PrintString("X ");
-		printUInt64((*Counts).addcount);
+		print_uint64(Counts->addcount);
 		gfx_SetTextXY(142, 104);
 		gfx_PrintString("+1 EQU Per Click");
 		gfx_SetTextXY(142, 114);
-		printUInt64((*Prices).addprice);
+		print_uint64(Prices->addprice);
 		gfx_PrintString(" EQU");
 		gfx_TransparentSprite(up_stu, 140, 142);
 		gfx_SetTextXY(170, 148);
 		gfx_PrintString("Bored Student");
 		gfx_SetTextXY(170, 158);
 		gfx_PrintString("X ");
-		printUInt64((*Counts).studentcount);
+		print_uint64(Counts->studentcount);
 		gfx_SetTextXY(142, 172);
 		gfx_PrintString("+1 EPS");
 		gfx_SetTextXY(142, 182);
-		printUInt64((*Prices).studentprice);
+		print_uint64(Prices->studentprice);
 		gfx_PrintString(" EQU");
 	}
-	else if ((*Player).page == 1)
+	else if (Player->page == 1)
 	{
 		gfx_TransparentSprite(up_sub, 140, 74);
 		gfx_SetTextXY(170, 80);
 		gfx_PrintString("Subtraction Sign");
 		gfx_SetTextXY(170, 90);
 		gfx_PrintString("X ");
-		printUInt64((*Counts).subcount);
+		print_uint64(Counts->subcount);
 		gfx_SetTextXY(142, 104);
 		gfx_PrintString("+3 EQU Per Click");
 		gfx_SetTextXY(142, 114);
-		printUInt64((*Prices).subprice);
+		print_uint64(Prices->subprice);
 		gfx_PrintString(" EQU");
 		gfx_TransparentSprite(up_coo, 140, 142);
 		gfx_SetTextXY(170, 148);
 		gfx_PrintString("Cookie");
 		gfx_SetTextXY(170, 158);
 		gfx_PrintString("X ");
-		printUInt64((*Counts).cookiecount);
+		print_uint64(Counts->cookiecount);
 		gfx_SetTextXY(142, 172);
 		gfx_PrintString("+4 EPS");
 		gfx_SetTextXY(142, 182);
-		printUInt64((*Prices).cookieprice);
+		print_uint64(Prices->cookieprice);
 		gfx_PrintString(" EQU");
 	}
-	else if ((*Player).page == 2)
+	else if (Player->page == 2)
 	{
 		gfx_TransparentSprite(up_mul, 140, 74);
 		gfx_SetTextXY(170, 80);
 		gfx_PrintString("Multiplying Sign");
 		gfx_SetTextXY(170, 90);
 		gfx_PrintString("X ");
-		printUInt64((*Counts).multcount);
+		print_uint64(Counts->multcount);
 		gfx_SetTextXY(142, 104);
 		gfx_PrintString("+10 EQU Per Click");
 		gfx_SetTextXY(142, 114);
-		printUInt64((*Prices).multprice);
+		print_uint64(Prices->multprice);
 		gfx_PrintString(" EQU");
 		gfx_TransparentSprite(up_off, 140, 142);
 		gfx_SetTextXY(170, 148);
 		gfx_PrintString("Office Worker");
 		gfx_SetTextXY(170, 158);
 		gfx_PrintString("X ");
-		printUInt64((*Counts).officecount);
+		print_uint64(Counts->officecount);
 		gfx_SetTextXY(142, 172);
 		gfx_PrintString("+27 EPS");
 		gfx_SetTextXY(142, 182);
-		printUInt64((*Prices).officeprice);
+		print_uint64(Prices->officeprice);
 		gfx_PrintString(" EQU");
 	}
-	else if ((*Player).page == 3)
+	else if (Player->page == 3)
 	{
 		gfx_TransparentSprite(up_div, 140, 74);
 		gfx_SetTextXY(170, 80);
 		gfx_PrintString("Division Sign");
 		gfx_SetTextXY(170, 90);
 		gfx_PrintString("X ");
-		printUInt64((*Counts).divcount);
+		print_uint64(Counts->divcount);
 		gfx_SetTextXY(142, 104);
 		gfx_PrintString("80 EQU Per Click");
 		gfx_SetTextXY(142, 114);
-		printUInt64((*Prices).divprice);
+		print_uint64(Prices->divprice);
 		gfx_PrintString(" EQU");
 		gfx_TransparentSprite(up_pho, 140, 142);
 		gfx_SetTextXY(170, 148);
 		gfx_PrintString("Phone :0");
 		gfx_SetTextXY(170, 158);
 		gfx_PrintString("X ");
-		printUInt64((*Counts).phonecount);
+		print_uint64(Counts->phonecount);
 		gfx_SetTextXY(142, 172);
 		gfx_PrintString("+101 EPS");
 		gfx_SetTextXY(142, 182);
-		printUInt64((*Prices).phoneprice);
+		print_uint64(Prices->phoneprice);
 		gfx_PrintString(" EQU");
 	}
-	else if ((*Player).page == 4)
+	else if (Player->page == 4)
 	{
 		gfx_TransparentSprite(up_exp, 140, 74);
 		gfx_SetTextXY(170, 80);
 		gfx_PrintString("Exponent Sign");
 		gfx_SetTextXY(170, 90);
 		gfx_PrintString("X ");
-		printUInt64((*Counts).expcount);
+		print_uint64(Counts->expcount);
 		gfx_SetTextXY(142, 104);
 		gfx_PrintString("750 EQU Per Click");
 		gfx_SetTextXY(142, 114);
-		printUInt64((*Prices).expprice);
+		print_uint64(Prices->expprice);
 		gfx_PrintString(" EQU");
 		gfx_TransparentSprite(up_bar, 140, 142);
 		gfx_SetTextXY(170, 148);
 		gfx_PrintString("Spacebar");
 		gfx_SetTextXY(170, 158);
 		gfx_PrintString("X ");
-		printUInt64((*Counts).spacecount);
+		print_uint64(Counts->spacecount);
 		gfx_SetTextXY(142, 172);
 		gfx_PrintString("+980 EPS");
 		gfx_SetTextXY(142, 182);
-		printUInt64((*Prices).spaceprice);
+		print_uint64(Prices->spaceprice);
 		gfx_PrintString(" EQU");
 	}
-	else if ((*Player).page == 5)
+	else if (Player->page == 5)
 	{
 		gfx_TransparentSprite(up_cal, 140, 74);
 		gfx_SetTextXY(170, 80);
 		gfx_PrintString("Calculator");
 		gfx_SetTextXY(170, 90);
 		gfx_PrintString("X ");
-		printUInt64((*Counts).calccount);
+		print_uint64(Counts->calccount);
 		gfx_SetTextXY(142, 104);
 		gfx_PrintString("2x EQU Per Click");
 		gfx_SetTextXY(142, 114);
-		printUInt64((*Prices).calcprice);
+		print_uint64(Prices->calcprice);
 		gfx_PrintString(" EQU");
 		gfx_TransparentSprite(up_but, 140, 142);
 		gfx_SetTextXY(170, 148);
 		gfx_PrintString("Button");
 		gfx_SetTextXY(170, 158);
 		gfx_PrintString("X ");
-		printUInt64((*Counts).buttoncount);
+		print_uint64(Counts->buttoncount);
 		gfx_SetTextXY(142, 172);
 		gfx_PrintString("2x EPS");
 		gfx_SetTextXY(142, 182);
-		printUInt64((*Prices).buttonprice);
+		print_uint64(Prices->buttonprice);
 		gfx_PrintString(" EQU");
 	}
 	gfx_SetColor(1);
@@ -290,6 +290,14 @@ int load(struct player_t* Player, struct counts_t* Counts, struct prices_t* Pric
 	{
 		return 1;
 	}
+	if (ti_GetC(var) != 'e')
+	{
+		Prices->calcprice = 1000000 * (5 ^ Counts->calccount)/(2 ^ Counts->calccount);
+		if (Counts->buttoncount == 2)
+		{
+			Prices->buttonprice = 9375000;
+		} 
+	}
 	ti_Close(var);
 
 	return 0;
@@ -297,7 +305,7 @@ int load(struct player_t* Player, struct counts_t* Counts, struct prices_t* Pric
 }
 int save(struct player_t* Player, struct counts_t* Counts, struct prices_t* Prices)
 {
-	if ((*Player).clickvalue == 0)
+	if (Player->clickvalue == 0)
 	{
 		return 1;
 	}
@@ -335,6 +343,12 @@ int save(struct player_t* Player, struct counts_t* Counts, struct prices_t* Pric
 	if (ti_Write(Prices, sizeof(struct prices_t), 1, var) != 1)
 	{
 		os_PutStrFull("Price");
+		ti_Close(var);
+		return 1;
+	}
+	if (ti_PutC('e', var) == EOF)
+	{
+		os_PutStrFull("d");
 		ti_Close(var);
 		return 1;
 	}
@@ -383,12 +397,12 @@ int main(void)
 		Prices.calcprice = 1000000;
 		Prices.buttonprice = 1500000;
 	}
+	gfx_Begin();
+	gfx_SetTransparentColor(0);
 
 	uint8_t seconds = rtc_Seconds;
 	kb_key_t g1_key = kb_Data[1];
-	gfx_Begin();
-	gfx_SetTransparentColor(0);
-	
+
 	if (CEClickU_init() == 0)
 	{
 		missing_appvars();
@@ -397,7 +411,7 @@ int main(void)
 	{
 		
 		gfx_SetPalette(palette, sizeof_palette, 0);
-		gfx_SetDrawBuffer(); // Draw to the buffer to avoid rendering artifacts
+		gfx_SetDrawBuffer(); // draw to the buffer to avoid rendering artifacts
 		gfx_ZeroScreen();
 		do
 		{
@@ -455,7 +469,7 @@ int main(void)
 						Player.points = Player.points - Prices.addprice;
 						Player.clickvalue++;
 						Counts.addcount++;
-						Prices.addprice *= 1.1;
+						Prices.addprice = Prices.addprice * 11 / 10;
 					}
 				}
 				else if (Player.page == 1)
@@ -465,7 +479,7 @@ int main(void)
 						Player.points = Player.points - Prices.subprice;
 						Player.clickvalue += 5;
 						Counts.subcount++;
-						Prices.subprice *= 1.1;
+						Prices.subprice = Prices.subprice * 11 / 10;
 					}
 				}
 				else if (Player.page == 2)
@@ -475,7 +489,7 @@ int main(void)
 						Player.points = Player.points - Prices.multprice;
 						Player.clickvalue += 10;
 						Counts.multcount++;
-						Prices.multprice *= 1.1;
+						Prices.multprice = Prices.multprice * 11 / 10;
 					}
 				}
 				else if (Player.page == 3)
@@ -485,7 +499,7 @@ int main(void)
 						Player.points = Player.points - Prices.divprice;
 						Player.clickvalue += 80;
 						Counts.divcount++;
-						Prices.divprice *= 1.1;
+						Prices.divprice = Prices.divprice * 11 / 10;
 					}
 				}
 				else if (Player.page == 4)
@@ -495,7 +509,7 @@ int main(void)
 						Player.points = Player.points - Prices.expprice;
 						Player.clickvalue += 750;
 						Counts.expcount++;
-						Prices.expprice *= 1.1;
+						Prices.expprice = Prices.expprice * 11 / 10;
 					}
 				}
 				else if (Player.page == 5)
@@ -505,7 +519,7 @@ int main(void)
 						Player.points = Player.points - Prices.calcprice;
 						Player.cvm *= 2;
 						Counts.calccount++;
-						Prices.calcprice *= 2.5;
+						Prices.calcprice = Prices.calcprice * 5 / 2;
 					}
 				}
 			}
@@ -518,7 +532,7 @@ int main(void)
 						Player.points = Player.points - Prices.studentprice;
 						Player.cps++;
 						Counts.studentcount++;
-						Prices.studentprice *= 1.1;
+						Prices.studentprice = Prices.studentprice * 11 / 10;
 					}
 				}
 				else if (Player.page == 1)
@@ -528,7 +542,7 @@ int main(void)
 						Player.points = Player.points - Prices.cookieprice;
 						Player.cps += 4;
 						Counts.cookiecount++;
-						Prices.cookieprice *= 1.1;
+						Prices.cookieprice = Prices.cookieprice * 11 / 10;
 					} 
 				}
 				else if (Player.page == 2)
@@ -538,7 +552,7 @@ int main(void)
 						Player.points = Player.points - Prices.officeprice;
 						Player.cps += 27;
 						Counts.officecount++;
-						Prices.officeprice *= 1.1;
+						Prices.officeprice = Prices.officeprice * 11 / 10;
 					}
 				}
 				else if (Player.page == 3)
@@ -548,7 +562,7 @@ int main(void)
 						Player.points = Player.points - Prices.phoneprice;
 						Player.cps += 101;
 						Counts.phonecount++;
-						Prices.phoneprice *= 1.1;
+						Prices.phoneprice = Prices.phoneprice * 11 / 10;
 					}
 				}
 				else if (Player.page == 4)
@@ -558,7 +572,7 @@ int main(void)
 						Player.points = Player.points - Prices.spaceprice;
 						Player.cps += 980;
 						Counts.spacecount++;
-						Prices.spaceprice *= 1.1;
+						Prices.spaceprice = Prices.spaceprice * 11 / 10;
 					}
 				}
 				else if (Player.page == 5)
@@ -568,12 +582,12 @@ int main(void)
 						Player.points = Player.points - Prices.buttonprice;
 						Player.cps_mult *= 2;
 						Counts.buttoncount++;
-						Prices.buttonprice *= 2.5;
+						Prices.buttonprice = Prices.buttonprice * 5 / 2;
 					}
 				}
 			}
 			seconds = rtc_Seconds;
-			Draw(&Player, &Counts, &Prices, prevkey);
+			draw(&Player, &Counts, &Prices, prevkey);
 
 			prevkey = key;
 		} while (!(g1_key & kb_Del));
